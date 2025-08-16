@@ -13,10 +13,10 @@ function escapeHTML(str) {
 const quiz = [
     { type: "single", question: "Which HTML tag is used for the largest heading?", options: ["<h1>", "<h6>", "<header>", "<heading>"], correct: [0] },
     { type: "multi",  question: "Which of these are programming languages?", options: ["Python", "HTML", "C++", "CSS"], correct: [0, 2] },
-    { type: "fill",   question: "Fill in the blank: CSS stands for ______.", options: ["Cascading"], correct: ["Cascading"] },
+    { type: "fill",   question: "Fill in the blank: CSS stands for ______.", options: ["Cascading style sheets"], correct: ["Cascading"] },
     { type: "single", question: "Which planet is known as the Red Planet?", options: ["Earth", "Venus", "Mars", "Jupiter"], correct: [2] },
     { type: "multi",  question: "Which of the following are prime numbers?", options: ["2", "4", "5", "9"], correct: [0, 2] },
-    { type: "fill",   question: "In computing, CPU stands for ______.", options: ["Central"], correct: ["Central"] },
+    { type: "fill",   question: "In computing, CPU stands for ______.", options: ["Central processing unit"], correct: ["Central"] },
     { type: "single", question: "What is the capital of Japan?", options: ["Kyoto", "Tokyo", "Osaka", "Hiroshima"], correct: [1] },
     { type: "multi",  question: "Which of these are mammals?", options: ["Dolphin", "Shark", "Bat", "Penguin"], correct: [0, 2] },
     { type: "fill",   question: "The chemical symbol for water is ____.", options: ["H2O"], correct: ["H2O"] },
