@@ -13,7 +13,7 @@ function escapeHTML(str) {
 const quiz = [
     { type: "single", question: "Which HTML tag is used for the largest heading?", options: ["<h1>", "<h6>", "<header>", "<heading>"], correct: [0] },
     { type: "multi", question: "Which of these are programming languages?", options: ["Python", "HTML", "C++", "CSS"], correct: [0, 2] },
-    { type: "fill", question: "Fill in the blank: CSS stands for ______.", correct: ["Cascading style sheets", "Cascading Style Sheets"] },
+    { type: "fill", question: "CSS stands for ______.", correct: ["Cascading style sheets", "Cascading Style Sheets"] },
     { type: "single", question: "Which planet is known as the Red Planet?", options: ["Earth", "Venus", "Mars", "Jupiter"], correct: [2] },
     { type: "multi", question: "Which of the following are prime numbers?", options: ["2", "4", "5", "9"], correct: [0, 2] },
     { type: "fill", question: "In computing, CPU stands for ______.", correct: ["Central processing unit", "Central Processing Unit"] },
