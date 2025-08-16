@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz Game</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+  <div class="orb c"></div>
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <div class="card" role="application" aria-label="Quiz Game">
+      <div class="header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="title">Quiz Game Application</div>
+        </div>
+
+        <!-- Progress (will be hidden automatically on Home via .home-active) -->
+        <div class="progress" aria-live="polite">
+          <div class="progress-bar" aria-hidden="true"><div class="progress-fill" id="pFill"></div></div>
+          <div class="progress-txt"><span id="pNow">1</span>/<span id="pTotal">1</span></div>
+        </div>
+      </div>
+
+      <div class="body">
+        <!-- HOME (static markup instead of injecting from JS) -->
+        <div id="home" class="home-wrap">
+          <h1 class="title">Quiz Game Application</h1>
+          <p class="about">
+            Welcome to the Quiz Game! Test your knowledge across multiple topics with
+            single-choice, multiple-choice, and fill-in-the-blank questions.
+          </p>
+          <div class="instructions">
+            <h2>Instructions</h2>
+            <ul>
+              <li>You will get <span id="totalCount"></span> questions in total.</li>
+              <li>Some are single choice, some multiple choice, and some fill-in.</li>
+              <li>Use the <b>Next</b> button to move forward.</li>
+              <li>On the last question, you’ll see <b>Submit Quiz</b>.</li>
+              <li>Your score will be displayed at the end with review.</li>
+            </ul>
+          </div>
+          <div style="margin-top:18px">
+            <button id="startBtn" class="btn" type="button">Start Quiz</button>
+          </div>
+        </div>
+
+        <!-- QUIZ CONTENT -->
+        <div id="quizContent" class="hidden" aria-live="polite">
+          <div class="meta">
+            <span class="chip" id="typeChip">Question Type</span>
+            <span class="chip" id="reqChip">—</span>
+          </div>
+          <div class="question" id="qText">Loading…</div>
+          <div class="options" id="options"></div>
+
+          <div class="actions">
+            <button class="btn ghost" id="backBtn" type="button">⟵ Back</button>
+            <div style="display:flex; gap:10px; align-items:center">
+              <span id="guardMsg" class="pill" style="display:none">Make a selection to continue</span>
+              <button class="btn" id="nextBtn" type="button">Next ⟶</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEW (hidden until finish) -->
+        <div id="review" class="hidden">
+          <div class="score-wrap" id="scoreWrap">
+            <!-- populated by JS -->
+          </div>
+
+          <div class="review" id="reviewList">
+            <!-- per-question review items go here -->
+          </div>
+
+          <div class="btn-group" style="margin-top:18px; display:flex; gap:12px; justify-content:center;">
+            <button id="playAgain" class="btn" type="button">Play Again</button>
+            <button id="homeBtn" class="btn" type="button">Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved!</div>
+  <script src="script.js"></script>
+</body>
+</html>
