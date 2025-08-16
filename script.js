@@ -12,14 +12,14 @@ function escapeHTML(str) {
 // ===== Quiz Data =====
 const quiz = [
     { type: "single", question: "Which HTML tag is used for the largest heading?", options: ["<h1>", "<h6>", "<header>", "<heading>"], correct: [0] },
-    { type: "multi",  question: "Which of these are programming languages?", options: ["Python", "HTML", "C++", "CSS"], correct: [0, 2] },
-    { type: "fill",   question: "Fill in the blank: CSS stands for ______.", options: ["Cascading style sheets"], correct: ["Cascading"] },
+    { type: "multi", question: "Which of these are programming languages?", options: ["Python", "HTML", "C++", "CSS"], correct: [0, 2] },
+    { type: "fill", question: "Fill in the blank: CSS stands for ______.", correct: ["Cascading style sheets", "Cascading Style Sheets"] },
     { type: "single", question: "Which planet is known as the Red Planet?", options: ["Earth", "Venus", "Mars", "Jupiter"], correct: [2] },
-    { type: "multi",  question: "Which of the following are prime numbers?", options: ["2", "4", "5", "9"], correct: [0, 2] },
-    { type: "fill",   question: "In computing, CPU stands for ______.", options: ["Central processing unit"], correct: ["Central"] },
+    { type: "multi", question: "Which of the following are prime numbers?", options: ["2", "4", "5", "9"], correct: [0, 2] },
+    { type: "fill", question: "In computing, CPU stands for ______.", correct: ["Central processing unit", "Central Processing Unit"] },
     { type: "single", question: "What is the capital of Japan?", options: ["Kyoto", "Tokyo", "Osaka", "Hiroshima"], correct: [1] },
-    { type: "multi",  question: "Which of these are mammals?", options: ["Dolphin", "Shark", "Bat", "Penguin"], correct: [0, 2] },
-    { type: "fill",   question: "The chemical symbol for water is ____.", options: ["H2O"], correct: ["H2O"] },
+    { type: "multi", question: "Which of these are mammals?", options: ["Dolphin", "Shark", "Bat", "Penguin"], correct: [0, 2] },
+    { type: "fill", question: "The chemical symbol for water is ______.", correct: ["H2O"] },
     { type: "single", question: "Which continent is the Sahara Desert located in?", options: ["Asia", "Africa", "Australia", "South America"], correct: [1] }
 ];
 
@@ -34,10 +34,8 @@ const reviewEl = document.getElementById('review');
 
 // ===== Init =====
 window.addEventListener("DOMContentLoaded", () => {
-    // set total count on home
     document.getElementById('totalCount').textContent = quiz.length;
 
-    // grab references (some references are inside quizContent; rebind later if necessary)
     startBtn = document.getElementById('startBtn');
     playAgainBtn = document.getElementById('playAgain');
     homeBtn = document.getElementById('homeBtn');
@@ -46,38 +44,26 @@ window.addEventListener("DOMContentLoaded", () => {
     if (playAgainBtn) playAgainBtn.addEventListener('click', startQuiz);
     if (homeBtn) homeBtn.addEventListener('click', showHome);
 
-    // initially show home
     showHome();
 });
 
 // ===== Show Home =====
 function showHome() {
-    // show home, hide quiz and review
     homeEl.classList.remove('hidden');
     quizEl.classList.add('hidden');
     reviewEl.classList.add('hidden');
-
-    // hide progress by toggling class on body
     document.body.classList.add('home-active');
 }
 
 // ===== Start Quiz =====
 function startQuiz() {
-    // reset state
     index = 0;
     user = [];
-
-    // show quiz UI, hide home and review
     homeEl.classList.add('hidden');
     quizEl.classList.remove('hidden');
     reviewEl.classList.add('hidden');
-
-    // allow header progress to show
     document.body.classList.remove('home-active');
-
-    // rebind elements inside quiz area
     rebindElements();
-    // reset progress fill
     if (pFill) pFill.style.width = "0%";
     render();
 }
@@ -95,7 +81,6 @@ function rebindElements() {
     backBtn = document.getElementById('backBtn');
     guardMsg = document.getElementById('guardMsg');
 
-    // attach events
     nextBtn.removeEventListener('click', nextClickHandler);
     nextBtn.addEventListener('click', nextClickHandler);
 
@@ -212,6 +197,15 @@ function mkOption(label, inputType, groupName, q, realIndex) {
 
 // ===== Navigation =====
 function nextClickHandler() {
+    const q = quiz[index];
+    if (q.type === "fill") {
+        if (!user[index] || !user[index].trim()) { guard(true); return; }
+    } else if (q.type === "multi") {
+        if (!Array.isArray(user[index]) || user[index].length === 0) { guard(true); return; }
+    } else if (q.type === "single") {
+        if (!Array.isArray(user[index]) || user[index].length !== 1) { guard(true); return; }
+    }
+
     if (index < quiz.length - 1) {
         index++;
         render();
@@ -226,24 +220,24 @@ function guard(state) {
 
 // ===== Finish / Review =====
 function finish() {
-    // hide quiz, show review
     quizEl.classList.add('hidden');
     reviewEl.classList.remove('hidden');
 
-    // populate score and review
     let correctCount = 0;
     const reviewList = document.getElementById('reviewList');
-    reviewList.innerHTML = ''; // clear
+    reviewList.innerHTML = '';
 
     quiz.forEach((q, i) => {
         let userAns = user[i] || (q.type === "fill" ? "" : []);
         let isCorrect = false;
 
         if (q.type === "fill") {
-            isCorrect = String(userAns).trim().toLowerCase() === String(q.correct[0]).trim().toLowerCase();
+            isCorrect = q.correct.some(ans => 
+                String(ans).trim().toLowerCase() === String(userAns).trim().toLowerCase()
+            );
         }
         else if (q.type === "single") {
-            isCorrect = Array.isArray(userAns) && userAns.length > 0 && userAns[0] === q.correct[0];
+            isCorrect = Array.isArray(userAns) && userAns.length === 1 && userAns[0] === q.correct[0];
         }
         else if (q.type === "multi") {
             isCorrect = Array.isArray(userAns) &&
@@ -253,7 +247,6 @@ function finish() {
 
         if (isCorrect) correctCount++;
 
-        // build element
         const item = document.createElement('div');
         item.className = 'rev-item';
         item.innerHTML = `
@@ -272,7 +265,7 @@ function finish() {
             <div class="rev-a">Correct Answer:
                 ${
                     q.type === "fill"
-                        ? escapeHTML(q.correct[0])
+                        ? q.correct.map(ans => `<code>${escapeHTML(ans)}</code>`).join(' / ')
                         : q.correct.map(idx => `<code>${escapeHTML(q.options[idx])}</code>`).join(', ')
                 }
             </div>
@@ -280,7 +273,6 @@ function finish() {
         reviewList.appendChild(item);
     });
 
-    // show score
     const scoreWrap = document.getElementById('scoreWrap');
     scoreWrap.innerHTML = `
         <div class="badge">${correctCount} / ${quiz.length}</div>
@@ -288,7 +280,6 @@ function finish() {
     `;
 }
 
-// attach playAgain/home listeners (in case elements present after DOM load)
 document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'playAgain') startQuiz();
     if (e.target && e.target.id === 'homeBtn') showHome();
